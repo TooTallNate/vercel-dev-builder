@@ -2,6 +2,10 @@ const { join } = require('path');
 const { spawnSync } = require('child_process');
 const { download, runNpmInstall, runPackageJsonScript } = require('@vercel/build-utils');
 
+function analyze({ files, entrypoint }) {
+	return files[entrypoint].digest;
+}
+
 async function build(opts) {
   const { files, workPath, meta } = opts;
   await download(files, workPath, meta);
@@ -43,6 +47,7 @@ async function startDevServer(opts) {
 
 module.exports = {
   version: 3,
+  analyze,
   build,
   shouldServe,
   startDevServer,
