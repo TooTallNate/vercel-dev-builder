@@ -1,6 +1,6 @@
 {
   "name": "vercel-dev-runtime",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Pseudo-runtime for Vecel that makes developing Runtimes easier",
   "main": "index.js",
   "keywords": [
