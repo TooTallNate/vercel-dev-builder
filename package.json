@@ -1,0 +1,19 @@
+{
+  "name": "vercel-local",
+  "version": "0.0.0",
+  "description": "Vercel psuedo-runtime for custom runtimes",
+  "main": "index.js",
+  "keywords": [
+    "vercel",
+    "vc",
+    "runtime",
+    "builder",
+    "local",
+    "development"
+  ],
+  "author": "Nathan Rajlich <n@n8.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "@vercel/build-utils": "^2.4.0"
+  }
+}
