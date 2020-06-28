@@ -1,7 +1,7 @@
 {
-  "name": "vercel-local",
+  "name": "vercel-dev-runtime",
   "version": "0.0.0",
-  "description": "Vercel psuedo-runtime for custom runtimes",
+  "description": "Pseudo-runtime for Vecel that makes developing Runtimes easier",
   "main": "index.js",
   "keywords": [
     "vercel",
@@ -12,8 +12,5 @@
     "development"
   ],
   "author": "Nathan Rajlich <n@n8.io>",
-  "license": "MIT",
-  "devDependencies": {
-    "@vercel/build-utils": "^2.4.0"
-  }
+  "license": "MIT"t
 }
