@@ -26,7 +26,6 @@ async function build(opts) {
 }
 
 async function prepareCache(opts) {
-	console.log('prepareCache', opts);
 	const builder = require(opts.workPath);
 	const ops = [glob('node_modules/**', opts.workPath)];
 	if (typeof builder.prepareCache === 'function') {
