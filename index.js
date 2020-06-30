@@ -1,4 +1,5 @@
 const {
+	glob,
 	download,
 	runNpmInstall,
 	runPackageJsonScript,
@@ -24,6 +25,13 @@ async function build(opts) {
 	return builder.build(opts);
 }
 
+async function prepareCache(opts) {
+	console.log('prepareCache', opts);
+	//const builder = require(opts.workPath);
+	const cache = await glob('node_modules/**', opts.workPath);
+	return cache;
+}
+
 async function shouldServe(opts) {
 	// TODO: purge the require cache before require()
 	const builder = require(opts.workPath);
@@ -46,6 +54,7 @@ module.exports = {
 	version: 3,
 	analyze,
 	build,
+	prepareCache,
 	shouldServe,
 	startDevServer,
 };
