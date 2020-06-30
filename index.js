@@ -1,4 +1,5 @@
 const {
+	glob,
 	download,
 	runNpmInstall,
 	runPackageJsonScript,
@@ -19,9 +20,22 @@ async function build(opts) {
 
 	await runPackageJsonScript(workPath, 'build');
 
-	// TODO: purge the require cache before require()
+	// TODO: purge the require cache before require() when `meta.isDev`
 	const builder = require(workPath);
 	return builder.build(opts);
+}
+
+async function prepareCache(opts) {
+	const builder = require(opts.workPath);
+	const ops = [glob('node_modules/**', opts.workPath)];
+	if (typeof builder.prepareCache === 'function') {
+		ops.push(builder.prepareCache(opts));
+	}
+	const [builderNodeModules, builderCache] = await Promise.all(ops);
+	return {
+		...builderNodeModules,
+		...builderCache,
+	};
 }
 
 async function shouldServe(opts) {
@@ -46,6 +60,7 @@ module.exports = {
 	version: 3,
 	analyze,
 	build,
+	prepareCache,
 	shouldServe,
 	startDevServer,
 };
