@@ -37,4 +37,4 @@ Specify the **`vercel-dev-runtime`** runtime in your `vercel.json` file:
 For some real-world usage examples, see
 [vercel-deno](https://github.com/TooTallNate/vercel-deno/blob/master/vercel.json#L4)
 or
-[vercel-bash](https://github.com/importpw/vercel-bash/blob/master/vercel.json#L4)
+[vercel-bash](https://github.com/importpw/vercel-bash/blob/master/vercel.json#L4).
