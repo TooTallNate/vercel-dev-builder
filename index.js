@@ -1,6 +1,8 @@
 const {
 	glob,
 	download,
+	getLatestNodeVersion,
+	getSpawnOptions,
 	runNpmInstall,
 	runPackageJsonScript,
 } = require('@vercel/build-utils');
@@ -14,7 +16,8 @@ async function build(opts) {
 	await runNpmInstall(workPath, ['--prefer-offline'], {}, meta);
 	console.log(`Install complete [${Date.now() - installTime}ms]`);
 
-	await runPackageJsonScript(workPath, 'build');
+	const spawnOpts = getSpawnOptions(meta, getLatestNodeVersion());
+	await runPackageJsonScript(workPath, 'build', spawnOpts);
 
 	// TODO: purge the require cache before require() when `meta.isDev`
 	const builder = require(workPath);
