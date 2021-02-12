@@ -1,6 +1,6 @@
 {
   "name": "vercel-dev-runtime",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Pseudo-runtime for Vercel that makes developing Runtimes easier",
   "main": "index.js",
   "keywords": [
