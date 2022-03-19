@@ -7,17 +7,27 @@ const {
 	runPackageJsonScript,
 } = require('@vercel/build-utils');
 
+const BUILD_SET_SYMBOL = Symbol('BUILD_SET_SYMBOL');
+
 async function build(opts) {
 	const { files, workPath, meta } = opts;
 	await download(files, workPath, meta);
 
-	const installTime = Date.now();
-	console.log('Installing local runtime dependencies...');
-	await runNpmInstall(workPath, ['--prefer-offline'], {}, meta);
-	console.log(`Install complete [${Date.now() - installTime}ms]`);
+	const buildSet = meta[BUILD_SET_SYMBOL] || new Set();
+	if (!meta[BUILD_SET_SYMBOL]) {
+		meta[BUILD_SET_SYMBOL] = buildSet;
+	}
 
-	const spawnOpts = getSpawnOptions(meta, getLatestNodeVersion());
-	await runPackageJsonScript(workPath, 'build', spawnOpts);
+	if (!buildSet.has(workPath)) {
+		const installTime = Date.now();
+		console.log('Installing local runtime dependencies...');
+		await runNpmInstall(workPath, ['--prefer-offline'], {}, meta);
+		console.log(`Install complete [${Date.now() - installTime}ms]`);
+
+		const spawnOpts = getSpawnOptions(meta, getLatestNodeVersion());
+		await runPackageJsonScript(workPath, 'build', spawnOpts);
+		buildSet.add(workPath);
+	}
 
 	// TODO: purge the require cache before require() when `meta.isDev`
 	const builder = require(workPath);
