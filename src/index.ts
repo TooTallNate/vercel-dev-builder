@@ -1,7 +1,7 @@
 import {
 	glob,
 	download,
-	getLatestNodeVersion,
+	getNodeVersion,
 	getSpawnOptions,
 	runNpmInstall,
 	runPackageJsonScript,
@@ -23,7 +23,7 @@ function isSet<T>(v?: any): v is Set<T> {
 }
 
 export const build: BuildV3 = async (opts) => {
-	const { files, workPath, meta = {} } = opts;
+	const { files, workPath, config, meta = {} } = opts;
 	await download(files, workPath, meta);
 
 	const _buildSet = meta[VERCEL_DEV_BUILDER_SET];
@@ -35,12 +35,14 @@ export const build: BuildV3 = async (opts) => {
 	}
 
 	if (!buildSet.has(workPath)) {
-		const installTime = Date.now();
-		console.log('Installing local runtime dependencies...');
-		await runNpmInstall(workPath, ['--prefer-offline'], {}, meta);
-		console.log(`Install complete [${Date.now() - installTime}ms]`);
-
-		const spawnOpts = getSpawnOptions(meta, getLatestNodeVersion());
+		const nodeVersion = await getNodeVersion(
+			workPath,
+			undefined,
+			config,
+			meta
+		);
+		const spawnOpts = getSpawnOptions(meta, nodeVersion);
+		await runNpmInstall(workPath, [], spawnOpts, meta, nodeVersion);
 		await runPackageJsonScript(workPath, 'build', spawnOpts);
 		buildSet.add(workPath);
 	}
