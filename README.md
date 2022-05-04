@@ -1,4 +1,4 @@
-# Vercel Dev Runtime (`vercel-dev-runtime`)
+# Vercel Dev Builder (`vercel-dev-builder`)
 
 This is a "passthrough-runtime" for Vercel that is meant for use _within_ the
 repo of your custom Vercel Runtime. It makes developing Runtimes easier by being
@@ -20,13 +20,13 @@ dependencies installed and have built the Runtime if necessary.
 
 ## Usage
 
-Specify the **`vercel-dev-runtime`** runtime in your `vercel.json` file:
+Specify **`vercel-dev-builder`** in your `vercel.json` file:
 
 ```json
 {
 	"version": 2,
 	"functions": {
-		"api/**/*.abc": { "runtime": "vercel-dev-runtime@0.0.2" }
+		"api/**/*.abc": { "runtime": "vercel-dev-builder@0.0.5" }
 	}
 }
 ```
