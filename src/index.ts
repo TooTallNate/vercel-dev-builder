@@ -1,21 +1,37 @@
-const {
+import {
 	glob,
 	download,
 	getLatestNodeVersion,
 	getSpawnOptions,
 	runNpmInstall,
 	runPackageJsonScript,
-} = require('@vercel/build-utils');
+	BuildV3,
+	StartDevServer,
+	PrepareCache,
+	ShouldServeOptions,
+} from '@vercel/build-utils';
 
-const BUILD_SET_SYMBOL = Symbol('BUILD_SET_SYMBOL');
+// Special key name for the Set that is stored on
+// the `meta` object to determine when the `build()`
+// function has been executed.
+const VERCEL_DEV_BUILDER_SET = 'VERCEL_DEV_BUILDER_SET';
 
-async function build(opts) {
-	const { files, workPath, meta } = opts;
+export const version = 3;
+
+function isSet<T>(v?: any): v is Set<T> {
+	return v && v instanceof Set;
+}
+
+export const build: BuildV3 = async (opts) => {
+	const { files, workPath, meta = {} } = opts;
 	await download(files, workPath, meta);
 
-	const buildSet = meta[BUILD_SET_SYMBOL] || new Set();
-	if (!meta[BUILD_SET_SYMBOL]) {
-		meta[BUILD_SET_SYMBOL] = buildSet;
+	const _buildSet = meta[VERCEL_DEV_BUILDER_SET];
+	let buildSet: Set<string>;
+	if (isSet<string>(_buildSet)) {
+		buildSet = _buildSet;
+	} else {
+		buildSet = meta[VERCEL_DEV_BUILDER_SET] = new Set<string>();
 	}
 
 	if (!buildSet.has(workPath)) {
@@ -32,9 +48,9 @@ async function build(opts) {
 	// TODO: purge the require cache before require() when `meta.isDev`
 	const builder = require(workPath);
 	return builder.build(opts);
-}
+};
 
-async function prepareCache(opts) {
+export const prepareCache: PrepareCache = async (opts) => {
 	const builder = require(opts.workPath);
 	const ops = [glob('node_modules/**', opts.workPath)];
 	if (typeof builder.prepareCache === 'function') {
@@ -45,9 +61,9 @@ async function prepareCache(opts) {
 		...builderNodeModules,
 		...builderCache,
 	};
-}
+};
 
-async function shouldServe(opts) {
+export async function shouldServe(opts: ShouldServeOptions): Promise<boolean> {
 	// TODO: purge the require cache before require()
 	const builder = require(opts.workPath);
 	if (typeof builder.shouldServe === 'function') {
@@ -56,19 +72,11 @@ async function shouldServe(opts) {
 	return false;
 }
 
-async function startDevServer(opts) {
+export const startDevServer: StartDevServer = (opts) => {
 	// TODO: purge the require cache before require()
 	const builder = require(opts.workPath);
 	if (typeof builder.startDevServer === 'function') {
 		return builder.startDevServer(opts);
 	}
 	return null;
-}
-
-module.exports = {
-	version: 3,
-	build,
-	prepareCache,
-	shouldServe,
-	startDevServer,
 };
