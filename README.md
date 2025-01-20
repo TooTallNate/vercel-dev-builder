@@ -25,7 +25,7 @@ Specify **`vercel-dev-builder`** in your `vercel.json` file:
 ```json
 {
 	"functions": {
-		"api/**/*.abc": { "runtime": "vercel-dev-builder@0.0.5" }
+		"api/**/*.abc": { "runtime": "vercel-dev-builder@0.0.6" }
 	}
 }
 ```

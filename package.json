@@ -1,29 +1,20 @@
 {
-  "name": "vercel-dev-builder",
-  "version": "0.0.5",
-  "description": "Meta-builder for developing Vercel Builders",
-  "main": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "keywords": [
-    "vercel",
-    "vc",
-    "runtime",
-    "builder",
-    "local",
-    "development"
-  ],
-  "author": "Nathan Rajlich <n@n8.io>",
-  "license": "MIT",
-  "scripts": {
-    "prebuild": "rm -rfv dist",
-    "build": "tsc"
-  },
-  "devDependencies": {
-    "@types/node": "^22.10.7",
-    "@vercel/build-utils": "^9.0.1",
-    "typescript": "^5.7.3"
-  },
-  "packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
+	"name": "vercel-dev-builder",
+	"version": "0.0.6",
+	"description": "Meta-builder for developing Vercel Builders",
+	"main": "dist/index.js",
+	"files": ["dist"],
+	"keywords": ["vercel", "vc", "runtime", "builder", "local", "development"],
+	"author": "Nathan Rajlich <n@n8.io>",
+	"license": "MIT",
+	"scripts": {
+		"prebuild": "rm -rfv dist",
+		"build": "tsc"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.7",
+		"@vercel/build-utils": "^9.0.1",
+		"typescript": "^5.7.3"
+	},
+	"packageManager": "pnpm@9.10.0+sha512.73a29afa36a0d092ece5271de5177ecbf8318d454ecd701343131b8ebc0c1a91c487da46ab77c8e596d6acf1461e3594ced4becedf8921b074fbd8653ed7051c"
 }
