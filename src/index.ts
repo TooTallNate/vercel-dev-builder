@@ -5,10 +5,10 @@ import {
 	getSpawnOptions,
 	runNpmInstall,
 	runPackageJsonScript,
-	BuildV3,
-	StartDevServer,
-	PrepareCache,
-	ShouldServeOptions,
+	type BuildV3,
+	type StartDevServer,
+	type PrepareCache,
+	type ShouldServe,
 } from '@vercel/build-utils';
 
 // Special key name for the Set that is stored on
@@ -18,8 +18,8 @@ const VERCEL_DEV_BUILDER_SET = 'VERCEL_DEV_BUILDER_SET';
 
 export const version = 3;
 
-function isSet<T>(v?: any): v is Set<T> {
-	return v && v instanceof Set;
+function isSet<T>(v?: unknown): v is Set<T> {
+	return !!v && v instanceof Set;
 }
 
 export const build: BuildV3 = async (opts) => {
@@ -65,14 +65,14 @@ export const prepareCache: PrepareCache = async (opts) => {
 	};
 };
 
-export async function shouldServe(opts: ShouldServeOptions): Promise<boolean> {
+export const shouldServe: ShouldServe = async (opts) => {
 	// TODO: purge the require cache before require()
 	const builder = require(opts.workPath);
 	if (typeof builder.shouldServe === 'function') {
 		return builder.shouldServe(opts);
 	}
 	return false;
-}
+};
 
 export const startDevServer: StartDevServer = (opts) => {
 	// TODO: purge the require cache before require()
